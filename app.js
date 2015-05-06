@@ -8,7 +8,11 @@ var express = require('express')
 
 var app = express();
 
-var Grid = require('./grid');
+// Game of Life variables.
+var GameOfLife = require('./gameOfLife');
+var rows = 30;
+var cols = 50;
+var gameOfLife = new GameOfLife(rows, cols);
 
 // Configure our application
 app.configure(function () {
@@ -59,74 +63,11 @@ io.sockets.on('connection', function (socket) {
         console.log(data);
         
         setInterval(function () {
-            generate();
-            socket.emit('drawGrid', gridCells);
+            socket.emit('drawGrid', gameOfLife.generate());
         }, 100);    
     });
 
 });
 
-var rows = 70;
-var cols = 100;
-var grid = new Grid(rows, cols);
-grid.setCell(20, 20, 1);
-grid.setCell(20, 21, 1);
-grid.setCell(20, 24, 1);
-grid.setCell(20, 25, 1);
-grid.setCell(20, 26, 1);
-grid.setCell(19, 23, 1);
-grid.setCell(18, 21, 1);
 
-var gridCells;
 
-function generate() {
-
-    gridCells = [];
-
-    // Create a blank grid to work with.
-    var gridUpdate = new Grid(rows, cols);
-    
-    // Update the blank grid with the cell existence.
-    for (var row = 0; row < rows; ++row) {
-        for (var col = 0; col < cols; ++col) {
-            if (determineExistence(grid, row, col)) {
-                gridUpdate.setCell(row, col, 1);
-                gridCells.push({ row: row, col: col });
-            }
-        }
-    }
-    
-    // Copy the grid back to the original.
-    grid.copy(gridUpdate, rows, cols);
-}
-
-function determineExistence(grid, row, col) {
-    
-    var cellExists = grid.getCell(row, col);
-    var neighbourCount = grid.getNeighbourCount(row, col);
-    
-    if (cellExists) {
-        // Any live cell with fewer than two live neighbours dies, as if caused by under-population.
-        if (neighbourCount < 2) {
-            cellExists = 0;
-        }
-        
-        // Any live cell with two or three live neighbours lives on to the next generation.
-        if (neighbourCount == 2 || neighbourCount == 3) {
-            cellExists = 1;
-        }
-        
-        // Any live cell with more than three live neighbours dies, as if by overcrowding.
-        if (neighbourCount > 3) {
-            cellExists = 0;
-        }
-
-    } else {
-        // Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.
-        if (neighbourCount == 3) {
-            cellExists = 1;
-        }
-    }
-    
-    return cellExists;
-}

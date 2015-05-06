@@ -1,6 +1,6 @@
-
-// every time the user drags their mouse
-// this function will be executed
+/// <summary>
+/// Mouse down event handler called from paper.js.
+/// </summary>
 function onMouseDown(event) {
     
     // Request grid update from the server.
@@ -8,6 +8,9 @@ function onMouseDown(event) {
 
 }
 
+/// <summary>
+/// Request the server to update the life grid.
+/// </summary>
 function requestGridUpdate() {
     
     // Each Socket.IO connection has a unique session id
@@ -16,14 +19,19 @@ function requestGridUpdate() {
     io.emit('requestGridUpdate', data, sessionId);
 }
 
+/// <summary>
+/// Draw a cell at the given row and column.
+/// </summary>
 function drawCell(row, col) {
 
-    // Render the circle with Paper.js
-    var circle = new Path.Circle(new Point(col*15 + 20, row*15 + 20), 5);
+    // Render the circle with paper.js.
+    var circle = new Path.Circle(new Point(col*10 + 20, row*10 + 20), 5);
     circle.fillColor = '#ff0000';
 }
 
-// Listen for 'drawGrid' events
+/// <summary>
+/// Listen for 'drawGrid' events from the server.
+/// </summary>
 io.on('drawGrid', function (data) {
     
     console.log('drawGrid event recieved:', data);

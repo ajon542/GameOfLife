@@ -19,6 +19,7 @@
     <Content Include="package.json" />
     <Content Include="readme.md" />
     <Compile Include="app.js" />
+    <Compile Include="gameOfLife.js" />
     <Compile Include="Grid.js" />
     <Compile Include="routes\index.js" />
     <Compile Include="routes\user.js" />
