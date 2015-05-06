@@ -46,34 +46,26 @@ Grid.prototype.getCell = function (row, col) {
     return this.grid[row][col];
 }
 
+var neighbours = [
+    { row: -1, col: -1 },
+    { row: -1, col:  0 },
+    { row: -1, col:  1 },
+    { row:  0, col: -1 },
+    { row:  0, col:  1 },
+    { row:  1, col: -1 },
+    { row:  1, col:  0 },
+    { row:  1, col:  1 }
+];
+
 Grid.prototype.getNeighbourCount = function (row, col) {
     var count = 0;
-
-    if (this.grid[(row - 1).mod(this.rows)][(col - 1).mod(this.cols)] == 1) {
-        count++;
-    }
-    if (this.grid[(row - 1).mod(this.rows)][(col).mod(this.cols)] == 1) {
-        count++;
-    }
-    if (this.grid[(row - 1).mod(this.rows)][(col + 1).mod(this.cols)] == 1) {
-        count++;
-    }
-
-    if (this.grid[(row).mod(this.rows)][(col - 1).mod(this.cols)] == 1) {
-        count++;
-    }
-    if (this.grid[(row).mod(this.rows)][(col + 1).mod(this.cols)] == 1) {
-        count++;
-    }
-
-    if (this.grid[(row + 1).mod(this.rows)][(col - 1).mod(this.cols)] == 1) {
-        count++;
-    }
-    if (this.grid[(row + 1).mod(this.rows)][(col).mod(this.cols)] == 1) {
-        count++;
-    }
-    if (this.grid[(row + 1).mod(this.rows)][(col + 1).mod(this.cols)] == 1) {
-        count++;
+    
+    for (var i = 0; i < neighbours.length; ++i) {
+        var r = (row + neighbours[i].row).mod(this.rows);
+        var c = (col + neighbours[i].col).mod(this.cols);
+        if (this.grid[r][c]) {
+            count++;
+        }
     }
 
     return count;
