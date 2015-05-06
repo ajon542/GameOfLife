@@ -60,14 +60,14 @@ io.sockets.on('connection', function (socket) {
         
         setInterval(function () {
             generate();
-            socket.emit('drawGrid', grid);
-        }, 50);    
+            socket.emit('drawGrid', gridCells);
+        }, 100);    
     });
 
 });
 
-var rows = 50;
-var cols = 70;
+var rows = 70;
+var cols = 100;
 var grid = new Grid(rows, cols);
 grid.setCell(20, 20, 1);
 grid.setCell(20, 21, 1);
@@ -77,16 +77,22 @@ grid.setCell(20, 26, 1);
 grid.setCell(19, 23, 1);
 grid.setCell(18, 21, 1);
 
+var gridCells;
 
 function generate() {
-    
+
+    gridCells = [];
+
     // Create a blank grid to work with.
     var gridUpdate = new Grid(rows, cols);
     
     // Update the blank grid with the cell existence.
     for (var row = 0; row < rows; ++row) {
         for (var col = 0; col < cols; ++col) {
-            gridUpdate.setCell(row, col, determineExistence(grid, row, col));
+            if (determineExistence(grid, row, col)) {
+                gridUpdate.setCell(row, col, 1);
+                gridCells.push({ row: row, col: col });
+            }
         }
     }
     

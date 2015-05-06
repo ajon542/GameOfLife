@@ -32,12 +32,8 @@ io.on('drawGrid', function (data) {
     project.activeLayer.removeChildren();
     
     // Draw the cells defined by the grid.
-    for (var row = 0; row < data.rows; ++row) {
-        for (var col = 0; col < data.cols; ++col) {
-            if (data.grid[row][col] == 1) {
-                drawCell(row, col);
-            }
-        }
+    for (var i = 0; i < data.length; ++i) {
+        drawCell(data[i].row, data[i].col);
     }
 
     // Refresh the view, so we always get an update, even if the tab is not in focus.
