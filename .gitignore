@@ -45,3 +45,4 @@ Temporary Items
 bin
 obj
 node_modules
+.ntvs_analysis.dat
