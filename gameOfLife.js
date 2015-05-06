@@ -1,34 +1,26 @@
 ﻿var Grid = require('./grid');
 
+/// <summary>
+/// Construct a game of life with the given number of rows and columns.
+/// </summary>
 var GameOfLife = function (rows, cols) {
     this.rows = rows;
     this.cols = cols;
     this.grid = new Grid(rows, cols);
-
-    for (var row = 0; row < rows; ++row) {
-        for (var col = 0; col < cols; ++col) {
-            if (Math.random() < 0.7) {
-                this.grid.setCell(row, col, 1);
-            }
-        }
-    }
 }
 
-// cool pattern to start with
-/*grid.setCell(20, 20, 1);
-grid.setCell(20, 21, 1);
-grid.setCell(20, 24, 1);
-grid.setCell(20, 25, 1);
-grid.setCell(20, 26, 1);
-grid.setCell(19, 23, 1);
-grid.setCell(18, 21, 1);*/
-
+/// <summary>
+/// Initialize the game of life with the given set of cells.
+/// </summary>
 GameOfLife.prototype.setCells = function (cellList) {
     for (var i = 0; i < cellList.length; ++i) {
-        this.grid.setCell(cellList[i].row, cellList[i].col);
+        this.grid.setCell(cellList[i].row, cellList[i].col, 1);
     }
 }
 
+/// <summary>
+/// Update the state of the cells.
+/// </summary>
 GameOfLife.prototype.generate = function () {
     
     var gridCells = [];
@@ -51,6 +43,9 @@ GameOfLife.prototype.generate = function () {
     return gridCells;
 }
 
+/// <summary>
+/// Determine whether a cell lives or dies.
+/// </summary>
 function determineExistence(grid, row, col) {
     
     var cellExists = grid.getCell(row, col);
